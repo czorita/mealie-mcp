@@ -15,10 +15,16 @@ Unit tests focus on testing **individual functions and methods** without externa
 
 ```
 tests/unit/
-├── conftest.py              # Unit test fixtures and mocks
-├── test_client_unit.py      # MealieClient method tests
-├── test_tools_unit.py       # MCP tool function tests
-└── README.md                # This file
+├── conftest.py               # Unit test fixtures and mocks
+├── builders.py                # Test data builders
+├── assertions.py               # Custom assertion helpers
+├── test_client.py             # MealieClient method tests
+├── test_tools_recipes.py      # Recipe tool function tests
+├── test_tools_mealplans.py    # Meal plan tool function tests
+├── test_tools_shopping.py     # Shopping list tool function tests
+├── test_tools_organizers.py   # Category/tag/tool tests
+├── test_tools_parser.py       # Ingredient parser tests
+└── README.md                  # This file
 ```
 
 ## Quick Start
@@ -28,7 +34,7 @@ tests/unit/
 pytest tests/unit/ -v
 
 # Run specific test file
-pytest tests/unit/test_client_unit.py -v
+pytest tests/unit/test_client.py -v
 
 # Run tests matching pattern
 pytest tests/unit/ -k "recipe" -v
@@ -288,8 +294,8 @@ Unit tests are **very fast**:
 ## Examples
 
 See example tests in:
-- `test_client_unit.py` - MealieClient method tests
-- `test_tools_unit.py` - MCP tool function tests
+- `test_client.py` - MealieClient method tests
+- `test_tools_recipes.py` - MCP tool function tests
 
 ## Next Steps
 
