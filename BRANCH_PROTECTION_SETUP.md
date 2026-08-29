@@ -43,7 +43,7 @@ To enable branch protection on the `main` branch, add these **exact** status che
 
 ```bash
 # Enable branch protection with required status checks
-gh api repos/mdlopresti/mealie-mcp/branches/main/protection \
+gh api repos/czorita/mealie-mcp/branches/main/protection \
   -X PUT \
   --input - <<'EOF'
 {
@@ -75,7 +75,7 @@ After setting up branch protection, verify the configuration:
 
 ```bash
 # View current branch protection settings
-gh api repos/mdlopresti/mealie-mcp/branches/main/protection \
+gh api repos/czorita/mealie-mcp/branches/main/protection \
   --jq '.required_status_checks.contexts'
 ```
 
@@ -138,7 +138,7 @@ If status checks don't appear in the branch protection UI:
 2. **Check workflow triggers**: Ensure workflows run on `pull_request` events
 3. **Verify check names**: Use `gh api` to see actual check names:
    ```bash
-   gh api repos/mdlopresti/mealie-mcp/commits/$(git rev-parse HEAD)/check-runs \
+   gh api repos/czorita/mealie-mcp/commits/$(git rev-parse HEAD)/check-runs \
      --jq '.check_runs[] | .name'
    ```
 

@@ -20,7 +20,7 @@ tests/e2e/
 
 E2E tests require two environment variables:
 
-- **MEALIE_E2E_URL**: URL of the Mealie instance (e.g., `https://recipe.vilo.network`)
+- **MEALIE_E2E_URL**: URL of the Mealie instance (e.g., `https://your-mealie-instance.com`)
 - **MEALIE_E2E_TOKEN**: API token for authentication
 
 If these are not set, all E2E tests are automatically skipped.

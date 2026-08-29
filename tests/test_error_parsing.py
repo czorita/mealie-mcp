@@ -73,7 +73,7 @@ class TestParseApiError:
         assert result["message"] == "Conflict (HTTP 409)"
         assert "Recipe already exists" in result["details"][0]
         # Check for known issue link
-        assert any("github.com/mdlopresti/mealie-mcp/issues/7" in s
+        assert any("github.com/czorita/mealie-mcp/issues/7" in s
                   for s in result["suggestions"])
 
     def test_simple_error_format(self):
@@ -252,7 +252,7 @@ class TestMealieAPIError:
 
         error_str = str(error)
         assert "Conflict (HTTP 409)" in error_str
-        assert "github.com/mdlopresti/mealie-mcp/issues/7" in error_str
+        assert "github.com/czorita/mealie-mcp/issues/7" in error_str
 
 
 class TestErrorMessageFormats:

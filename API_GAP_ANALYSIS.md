@@ -232,7 +232,7 @@ Full CRUD for event notification management
 
 ## Notes
 
-- All endpoints verified against live OpenAPI spec: https://recipe.vilo.network/openapi.json
+- All endpoints verified against live OpenAPI spec: https://your-mealie-instance.com/openapi.json
 - Coverage calculation: 64 implemented / 247 total = 26%
 - Admin endpoints (29) excluded from coverage target
 - Focus on household/recipe management endpoints for MCP use cases

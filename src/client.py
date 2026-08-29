@@ -41,7 +41,7 @@ _ERROR_TEMPLATES = {
             "Use update/patch operations instead of create for existing resources"
         ],
         "known_issues": {
-            "Recipe already exists": "https://github.com/mdlopresti/mealie-mcp/issues/7"
+            "Recipe already exists": "https://github.com/czorita/mealie-mcp/issues/7"
         }
     }
 }

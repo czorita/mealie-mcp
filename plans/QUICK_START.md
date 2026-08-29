@@ -15,7 +15,7 @@
 - [x] Docker/Podman for container testing
 
 ### Needed for E2E Tests
-- [ ] Mealie instance URL (recipe.vilo.network)
+- [ ] Mealie instance URL (your-mealie-instance.com)
 - [ ] API token with read/write permissions
 - [ ] Test account with isolated data
 
@@ -124,7 +124,7 @@ pytest tests/ -v -k "not e2e"
 
 ### E2E Tests (Optional)
 ```bash
-export MEALIE_E2E_URL="https://recipe.vilo.network"
+export MEALIE_E2E_URL="https://your-mealie-instance.com"
 export MEALIE_E2E_TOKEN="your-token-here"
 pytest tests/e2e/ -v --timeout=300
 # Expected: 1-3 minutes
@@ -177,7 +177,7 @@ pytest tests/ --collect-only | grep "test session starts" -A 1
 **Problem:** E2E tests don't run
 **Solution:** Set `MEALIE_E2E_URL` environment variable
 ```bash
-export MEALIE_E2E_URL="https://recipe.vilo.network"
+export MEALIE_E2E_URL="https://your-mealie-instance.com"
 pytest tests/e2e/ -v
 ```
 

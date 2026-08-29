@@ -121,7 +121,7 @@ MEDIUM:   Missing Docker container testing
 ## Key Features
 
 ### E2E Test Infrastructure (Phase 1.1)
-- ✅ Tests against real Mealie instance (recipe.vilo.network)
+- ✅ Tests against real Mealie instance (your-mealie-instance.com)
 - ✅ Automatic test data cleanup (no pollution)
 - ✅ Optional test suite (requires MEALIE_E2E_URL env var)
 - ✅ Retry logic for network failures

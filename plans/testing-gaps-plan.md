@@ -23,13 +23,13 @@ Address critical testing gaps in Mealie MCP Server to achieve 70%+ coverage with
 
 ## Dependencies
 - **Requires before starting:**
-  - Test Mealie instance URL (recipe.vilo.network)
+  - Test Mealie instance URL (your-mealie-instance.com)
   - Test API token with appropriate permissions
   - Docker/Podman for container testing
   - MCP protocol test fixtures
 
 - **External services:**
-  - Mealie API at recipe.vilo.network (for E2E tests)
+  - Mealie API at your-mealie-instance.com (for E2E tests)
   - GitHub Container Registry (for Docker image testing)
 
 - **Libraries/SDKs:**
@@ -38,7 +38,7 @@ Address critical testing gaps in Mealie MCP Server to achieve 70%+ coverage with
   - mcp Python SDK (for protocol validation)
 
 ## Assumptions
-- Recipe.vilo.network is available for E2E testing
+- The test Mealie instance is available for E2E testing
 - Test account can create/modify/delete test recipes without affecting production data
 - CI/CD has 15 minutes for E2E test suite (currently 10 min timeout)
 - E2E tests are opt-in via environment variable (not required for PR merges)

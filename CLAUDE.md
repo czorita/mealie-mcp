@@ -53,7 +53,7 @@ This directory contains the Mealie MCP (Model Context Protocol) server implement
 When implementing new endpoints or debugging existing ones, **always consult the OpenAPI specification** as the primary source of truth:
 
 ```bash
-curl -s https://recipe.vilo.network/openapi.json | python3 -m json.tool
+curl -s https://your-mealie-instance.com/openapi.json | python3 -m json.tool
 ```
 
 The OpenAPI spec provides:
@@ -86,7 +86,7 @@ Test endpoints directly before implementing MCP tools:
 
 ```bash
 # Example: Upload recipe image
-curl -X PUT "https://recipe.vilo.network/api/recipes/test-recipe/image" \
+curl -X PUT "https://your-mealie-instance.com/api/recipes/test-recipe/image" \
   -H "Authorization: Bearer $MEALIE_API_TOKEN" \
   -F "image=@test.jpg" \
   -F "extension=jpg"
@@ -150,11 +150,11 @@ The MealieClient handles this automatically via `self.client` (httpx.Client with
 
 ```bash
 # List all endpoints
-curl -s https://recipe.vilo.network/openapi.json | \
+curl -s https://your-mealie-instance.com/openapi.json | \
   python3 -c "import json, sys; spec=json.load(sys.stdin); print('\n'.join(spec['paths'].keys()))"
 
 # Get all endpoints by tag
-curl -s https://recipe.vilo.network/openapi.json | \
+curl -s https://your-mealie-instance.com/openapi.json | \
   python3 -c "
 import json, sys
 spec = json.load(sys.stdin)
@@ -201,11 +201,11 @@ for tag in sorted(by_tag.keys()):
    - CI automatically builds Docker image on push
    - Check status: `gh run list --limit 1`
    - Wait for completion (~30 seconds)
-   - Image pushed to `ghcr.io/mdlopresti/mealie-mcp:main`
+   - Image pushed to `ghcr.io/czorita/mealie-mcp:main`
 
 4. **Pull new image** in parent project:
    - **Option A:** Restart Claude Code/session (if using `--pull=always`)
-   - **Option B:** Manual pull: `docker pull ghcr.io/mdlopresti/mealie-mcp:main`
+   - **Option B:** Manual pull: `docker pull ghcr.io/czorita/mealie-mcp:main`
 
 5. **Verify changes** are active:
    - Test the modified tool/endpoint
