@@ -1,7 +1,7 @@
 # Mealie MCP Server
 
-[![Build and Push Docker Image](https://github.com/mdlopresti/mealie-mcp/actions/workflows/docker.yml/badge.svg)](https://github.com/mdlopresti/mealie-mcp/actions/workflows/docker.yml)
-[![Test](https://github.com/mdlopresti/mealie-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/mdlopresti/mealie-mcp/actions/workflows/test.yml)
+[![Build and Push Docker Image](https://github.com/czorita/mealie-mcp/actions/workflows/docker.yml/badge.svg)](https://github.com/czorita/mealie-mcp/actions/workflows/docker.yml)
+[![Test](https://github.com/czorita/mealie-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/czorita/mealie-mcp/actions/workflows/test.yml)
 
 A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that enables AI assistants to interact with [Mealie](https://mealie.io/) for recipe management, meal planning, and shopping lists.
 
@@ -68,12 +68,12 @@ A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that e
 
 **Option A: Pull from GitHub Container Registry (recommended)**
 ```bash
-docker pull ghcr.io/mdlopresti/mealie-mcp:latest
+docker pull ghcr.io/czorita/mealie-mcp:latest
 ```
 
 **Option B: Build from source**
 ```bash
-git clone https://github.com/mdlopresti/mealie-mcp.git
+git clone https://github.com/czorita/mealie-mcp.git
 cd mealie-mcp
 docker build -t mealie-mcp:latest .
 ```
