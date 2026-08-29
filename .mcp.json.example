@@ -1,13 +1,11 @@
 {
   "mcpServers": {
     "mealie": {
-      "command": "docker",
-      "args": [
-        "run", "-i", "--rm",
-        "-e", "MEALIE_URL=https://your-mealie-instance.com",
-        "-e", "MEALIE_API_TOKEN=your-api-token-here",
-        "mealie-mcp:latest"
-      ]
+      "type": "http",
+      "url": "http://<remote-tailscale-ip>:8000/mcp",
+      "headers": {
+        "Authorization": "Bearer <your-mealie-api-token>"
+      }
     }
   }
 }

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **BREAKING:** Removed stdio transport; the server now communicates exclusively over HTTP (`MCP_HOST`, `MCP_PORT`) to support remote deployment, authenticated with the existing `MEALIE_API_TOKEN` as a bearer token. Existing `docker run -i` / stdio `.mcp.json` configs must be updated to the new `type: "http"` form. Added a `docker-compose.yml` for production deployment and a non-root user in the Dockerfile. This warrants a MAJOR version bump.
+
 ### Added
 - Added event notifications management with 6 new MCP tools (Batch 2 - Phase 2.3)
 - Added `mealie_notifications_list` tool to list all event notifications with pagination

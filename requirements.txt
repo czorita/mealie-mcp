@@ -1,5 +1,7 @@
 # FastMCP - Model Context Protocol framework
-fastmcp>=0.1.0
+# Pinned to an exact version: HTTP transport and auth middleware behavior
+# depend on the specific release.
+fastmcp==3.4.7
 
 # HTTP client for Mealie API
 httpx>=0.27.0

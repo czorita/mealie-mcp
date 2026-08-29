@@ -98,7 +98,7 @@ curl -X PUT "https://recipe.vilo.network/api/recipes/test-recipe/image" \
 mcp/mealie/
 ├── src/
 │   ├── client.py           # MealieClient - HTTP client wrapping Mealie API
-│   ├── server.py           # FastMCP server - exposes MCP tools
+│   ├── server.py           # FastMCP server - exposes MCP tools (HTTP-only; MCP_HOST/MCP_PORT, MEALIE_API_TOKEN as bearer auth - no stdio path)
 │   └── tools/              # Tool implementations by category
 │       ├── recipes.py      # Recipe management tools
 │       ├── mealplans.py    # Meal planning tools

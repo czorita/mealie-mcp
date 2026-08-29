@@ -86,7 +86,23 @@ docker build -t mealie-mcp:latest .
 4. Create a new token (e.g., "MCP Server")
 5. Copy the token immediately (it won't be shown again)
 
-### 3. Configure Claude Code
+### 3. Run the Server
+
+The server communicates over HTTP, so it needs to be running (locally or on a
+remote machine) before Claude Code can connect to it:
+
+```bash
+docker run -d --restart unless-stopped \
+  -p 8000:8000 \
+  -e MEALIE_URL=https://your-mealie-instance.com \
+  -e MEALIE_API_TOKEN=your-api-token-here \
+  ghcr.io/czorita/mealie-mcp:latest
+```
+
+For a persistent deployment on a separate machine, see
+[Remote Deployment](#remote-deployment) below.
+
+### 4. Configure Claude Code
 
 Add to `.mcp.json` in your project root:
 
@@ -94,17 +110,18 @@ Add to `.mcp.json` in your project root:
 {
   "mcpServers": {
     "mealie": {
-      "command": "docker",
-      "args": [
-        "run", "-i", "--rm",
-        "-e", "MEALIE_URL=https://your-mealie-instance.com",
-        "-e", "MEALIE_API_TOKEN=your-api-token-here",
-        "ghcr.io/mdlopresti/mealie-mcp:latest"
-      ]
+      "type": "http",
+      "url": "http://localhost:8000/mcp",
+      "headers": { "Authorization": "Bearer your-api-token-here" }
     }
   }
 }
 ```
+
+`MEALIE_API_TOKEN` doubles as the bearer token the client must present -
+use the same value in both places. If the server is running on a remote
+machine, replace `localhost` with that machine's address (its Tailscale IP,
+for example).
 
 Then add `mealie` to your `~/.claude/settings.json`:
 
@@ -116,7 +133,7 @@ Then add `mealie` to your `~/.claude/settings.json`:
 }
 ```
 
-### 4. Test the Connection
+### 5. Test the Connection
 
 Restart Claude Code and try:
 ```
@@ -183,9 +200,12 @@ pip install -r requirements.txt
 export MEALIE_URL=https://your-mealie-instance.com
 export MEALIE_API_TOKEN=your-api-token
 
-# Run server
+# Run server - binds to MCP_HOST:MCP_PORT (default 0.0.0.0:8000)
 python -m src.server
 ```
+
+The server always runs over HTTP; there is no stdio mode. Every request must
+carry `Authorization: Bearer <MEALIE_API_TOKEN>`.
 
 ### Running Tests
 
@@ -238,6 +258,7 @@ Note: Live instance E2E tests create and delete test resources. Use a test/devel
 ```
 mealie-mcp/
 ├── Dockerfile           # Container definition
+├── docker-compose.yml   # Production deployment (remote host)
 ├── requirements.txt     # Python dependencies
 ├── build.sh            # Build helper script
 └── src/
@@ -254,11 +275,66 @@ mealie-mcp/
         └── shopping.py
 ```
 
+## Remote Deployment
+
+The server can run persistently on a separate machine (e.g. a home server)
+and be reached from the machine running Claude Code over an existing
+Tailscale/VPN link. No LAN firewall or port-forwarding changes are needed -
+the compose file below publishes the port only on the VPN interface.
+
+### 1. On the remote machine
+
+```bash
+git clone https://github.com/czorita/mealie-mcp.git
+cd mealie-mcp
+cp .env.example .env
+# Edit .env: set MEALIE_URL and MEALIE_API_TOKEN
+```
+
+Edit `docker-compose.yml` and replace `<remote-tailscale-ip>` with the
+remote machine's Tailscale (or other VPN) IP address, then start it:
+
+```bash
+docker compose up -d
+```
+
+`restart: unless-stopped` keeps it running across reboots and crashes.
+
+### 2. On the AI-client machine
+
+Point `.mcp.json` at the remote machine over the VPN (see
+[`.mcp.json.example`](.mcp.json.example)):
+
+```json
+{
+  "mcpServers": {
+    "mealie": {
+      "type": "http",
+      "url": "http://<remote-tailscale-ip>:8000/mcp",
+      "headers": { "Authorization": "Bearer <your-mealie-api-token>" }
+    }
+  }
+}
+```
+
+### Migrating from stdio
+
+Older versions of this server ran over stdio, launched as a local child
+process (`docker run -i --rm ...`). That mode has been removed - the server
+is now HTTP-only. Existing `.mcp.json` configs using `command`/`args` will
+stop working and must be replaced with the `type: "http"` form above,
+pointed at wherever the server is now running.
+
 ## Security
 
 - **Never commit API tokens** - Use environment variables
 - The API token has full access to your Mealie account
+- The same token also gates the MCP endpoint itself (as a bearer token), so
+  treat it with the same care you always have
 - Consider creating a dedicated Mealie user for the MCP server
+- No TLS is terminated by the server itself - rely on your VPN/Tailscale
+  link (or a reverse proxy) for transport encryption if reachable beyond
+  a trusted network
 
 ## Requirements
 
