@@ -249,7 +249,7 @@ pytest -m e2e
 # These tests are skipped if environment variables are not set
 ```
 
-See [tests/e2e/README.md](tests/e2e/README.md) for detailed E2E testing documentation.
+See [tests/e2e/README.md](tests/e2e/README.md) for detailed E2E testing documentation, and [docs/MCP_TESTING.md](docs/MCP_TESTING.md) for testing MCP protocol interactions directly.
 
 Note: Live instance E2E tests create and delete test resources. Use a test/development instance, not production!
 

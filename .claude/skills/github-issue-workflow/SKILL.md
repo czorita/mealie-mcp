@@ -238,5 +238,4 @@ $ git pull origin main
 ## Related Documentation
 
 - `CLAUDE.md` - Full git workflow and deployment pipeline
-- `API_GAP_ANALYSIS.md` - Prioritized list of missing features
 - GitHub Issues - Detailed implementation requirements
