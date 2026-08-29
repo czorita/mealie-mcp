@@ -1,0 +1,14 @@
+# Production deployment for the Mealie MCP server.
+#
+# Run this on the remote machine that will host the server, then connect to
+# it from the AI-client machine over your existing Tailscale/VPN link (see
+# the "Remote Deployment" section of the README). Publishing the port to the
+# host's VPN interface IP (not 0.0.0.0) keeps it unreachable from the plain
+# LAN - no firewall or port-forwarding changes needed.
+services:
+  mealie-mcp:
+    image: ghcr.io/czorita/mealie-mcp:latest
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "<remote-ip>:8000:8000"

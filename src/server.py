@@ -6,6 +6,7 @@ Provides tools and resources for recipe management, meal planning, and shopping 
 """
 
 import os
+import secrets
 import sys
 from pathlib import Path
 from typing import Any, Optional
@@ -15,6 +16,10 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from dotenv import load_dotenv
 from fastmcp import FastMCP
+from starlette.middleware import Middleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
 # Load environment variables
 load_dotenv()
@@ -2514,6 +2519,59 @@ def resource_shopping_list_detail(list_id: str) -> str:
 # =============================================================================
 # Server entry point
 # =============================================================================
+#
+# The server communicates exclusively over HTTP so it can run on a separate
+# machine from the AI client, reached over a network link (e.g. Tailscale).
+# Every request must present the same MEALIE_API_TOKEN used to talk to Mealie
+# as an `Authorization: Bearer <token>` header - a client that can already
+# reach the MCP tools has full effective access to the Mealie account through
+# them, so this just gates network access with a secret the user already
+# manages.
+
+
+def _resolve_http_config() -> tuple[str, int, str]:
+    """Resolve MCP_HOST, MCP_PORT, and the MEALIE_API_TOKEN bearer secret."""
+    host = os.getenv("MCP_HOST", "0.0.0.0")
+    port = int(os.getenv("MCP_PORT", "8000"))
+
+    token = os.getenv("MEALIE_API_TOKEN")
+    if not token:
+        print(
+            "ERROR: MEALIE_API_TOKEN must be set - it is required both to talk "
+            "to Mealie and as the MCP endpoint's bearer token.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    return host, port, token
+
+
+def _check_bearer_token(authorization_header: str | None, expected_token: str) -> bool:
+    """Constant-time check of an `Authorization: Bearer <token>` header."""
+    if not authorization_header or not authorization_header.startswith("Bearer "):
+        return False
+    provided_token = authorization_header[len("Bearer "):]
+    return secrets.compare_digest(provided_token, expected_token)
+
+
+class BearerTokenMiddleware(BaseHTTPMiddleware):
+    """Rejects any request that doesn't present the expected bearer token."""
+
+    def __init__(self, app, token: str):
+        super().__init__(app)
+        self._token = token
+
+    async def dispatch(self, request: Request, call_next):
+        if not _check_bearer_token(request.headers.get("Authorization"), self._token):
+            return JSONResponse({"error": "Unauthorized"}, status_code=401)
+        return await call_next(request)
+
 
 if __name__ == "__main__":
-    mcp.run()
+    mcp_host, mcp_port, mealie_api_token = _resolve_http_config()
+    mcp.run(
+        transport="http",
+        host=mcp_host,
+        port=mcp_port,
+        middleware=[Middleware(BearerTokenMiddleware, token=mealie_api_token)],
+    )
