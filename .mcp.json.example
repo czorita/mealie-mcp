@@ -2,7 +2,7 @@
   "mcpServers": {
     "mealie": {
       "type": "http",
-      "url": "http://<remote-tailscale-ip>:8000/mcp",
+      "url": "http://<remote-ip>:8000/mcp",
       "headers": {
         "Authorization": "Bearer <your-mealie-api-token>"
       }

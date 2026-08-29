@@ -11,4 +11,4 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - "<remote-tailscale-ip>:8000:8000"
+      - "<remote-ip>:8000:8000"

@@ -291,7 +291,7 @@ cp .env.example .env
 # Edit .env: set MEALIE_URL and MEALIE_API_TOKEN
 ```
 
-Edit `docker-compose.yml` and replace `<remote-tailscale-ip>` with the
+Edit `docker-compose.yml` and replace `<remote-ip>` with the
 remote machine's Tailscale (or other VPN) IP address, then start it:
 
 ```bash
@@ -310,7 +310,7 @@ Point `.mcp.json` at the remote machine over the VPN (see
   "mcpServers": {
     "mealie": {
       "type": "http",
-      "url": "http://<remote-tailscale-ip>:8000/mcp",
+      "url": "http://<remote-ip>:8000/mcp",
       "headers": { "Authorization": "Bearer <your-mealie-api-token>" }
     }
   }
